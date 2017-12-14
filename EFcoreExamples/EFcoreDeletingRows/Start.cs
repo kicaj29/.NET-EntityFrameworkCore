@@ -76,19 +76,21 @@ namespace EFcoreDeletingRows
 
 
             var r1 = dbContext.Root.First();
-            var p1 = dbContext.Root.First();
-            var c1 = dbContext.Root.First();
+            var p1 = dbContext.Parent.First();
+            var c1 = dbContext.Child.First();
 
             var s1 = dbContext.Entry(r1).State;
             var s2 = dbContext.Entry(p1).State;
             var s3 = dbContext.Entry(c1).State;
 
+           
+
             dbContext.SaveChanges();
             //transaction.Commit();
 
             var r1After = dbContext.Root.First();
-            var p1After = dbContext.Root.First();
-            var c1After = dbContext.Root.First();
+            var p1After = dbContext.Parent.First();
+            var c1After = dbContext.Child.First();
 
             var s1After = dbContext.Entry(r1After).State; //it causes System.InvalidOperationException!!! but why???
             var s2After = dbContext.Entry(p1After).State;
