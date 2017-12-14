@@ -89,11 +89,13 @@ namespace EFcoreDeletingRows
             //transaction.Commit();
 
             var r1After = dbContext.Root.First();
-            var p1After = dbContext.Parent.First();
+            //var p1After = dbContext.Parent.First();
             var c1After = dbContext.Child.First();
 
+            var s1a = dbContext.Entry(r1).State; //it causes System.InvalidOperationException!!! but why???
+
             var s1After = dbContext.Entry(r1After).State; //it causes System.InvalidOperationException!!! but why???
-            var s2After = dbContext.Entry(p1After).State;
+            //var s2After = dbContext.Entry(p1After).State;
             var s3After = dbContext.Entry(c1After).State;
 
             dbContext.SaveChanges();
