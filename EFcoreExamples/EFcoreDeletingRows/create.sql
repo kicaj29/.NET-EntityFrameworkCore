@@ -71,3 +71,12 @@ GO
 
 SET ANSI_PADDING OFF
 GO
+
+
+select * from dbo.Root
+select * from dbo.Parent
+select * from dbo.Child
+
+delete from dbo.Child
+delete from dbo.Parent
+delete from dbo.Root

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace EFcoreDeletingRows
 {
     public static class Start
@@ -14,7 +15,7 @@ namespace EFcoreDeletingRows
             var optionsBuilder = new DbContextOptionsBuilder<MyDBContext>();
 
             optionsBuilder.UseSqlServer(
-                "Data Source=localhost;Database=TPCentralDB;Integrated Security=SSPI;MultipleActiveResultSets=True",
+                "Data Source=localhost;Database=testDB;Integrated Security=SSPI;MultipleActiveResultSets=True",
                 options =>
                 {
                     options.UseRowNumberForPaging();
@@ -68,11 +69,7 @@ namespace EFcoreDeletingRows
 
             var child = dbContext.Child.Find(1, "root-1");
 
-            //need to remove old children data, as EF wont do it itself:
             dbContext.Parent.Remove(child.ParentEntity);
-
-            child.ParentEntity = null;
-            child.ParentId = null;
 
 
             var r1 = dbContext.Root.First();
@@ -83,27 +80,45 @@ namespace EFcoreDeletingRows
             var s2 = dbContext.Entry(p1).State;
             var s3 = dbContext.Entry(c1).State;
 
-           
+
 
             dbContext.SaveChanges();
-            //transaction.Commit();
+            // transaction.Commit();
 
-            var r1After = dbContext.Root.First();
-            //var p1After = dbContext.Parent.First();
-            var c1After = dbContext.Child.First();
-
-            var s1a = dbContext.Entry(r1).State; //it causes System.InvalidOperationException!!! but why???
-
-            var s1After = dbContext.Entry(r1After).State; //it causes System.InvalidOperationException!!! but why???
-            //var s2After = dbContext.Entry(p1After).State;
-            var s3After = dbContext.Entry(c1After).State;
-
-            dbContext.SaveChanges();
-            var r3 = dbContext.Root.First();
-
-            if (dbContext.Child.Count() != 1)
+            if (dbContext.Parent.Count() != 0)
             {
-                throw new Exception("There was error during deleting parent.");
+                throw new Exception("EF Core error!");
+            }
+
+            if (dbContext.Child.Count() != 0)
+            {
+                throw new Exception("EF Core error!");
+            }
+
+
+            dbContext.Child.Add(new Child()
+            {
+                Id = 2,
+                RootId = "root-1",
+                Name = "Child2",
+                ParentEntity = new Parent()
+                {
+                    Id = "id-2",
+                    RootId = "root-1",
+                    Name = "Parent2"
+                }
+            });
+
+            dbContext.SaveChanges();
+
+            if (dbContext.Parent.Count() == 0)
+            {
+                throw new Exception("EF Core error!");
+            }
+
+            if (dbContext.Child.Count() == 0)
+            {
+                throw new Exception("EF Core error!");
             }
 
             transaction.Commit();
