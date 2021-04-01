@@ -12,5 +12,13 @@ namespace ConstructorUsageByEFCore
         public string Name { get; private set; }
         public string SecondName { get; private set; }
         public string Address { get; private set; }
+
+        private Person(string name)
+        {
+            // this.Id = id;
+            this.Name = name;
+            // this.SecondName = secondName;
+            // this.Address = address;
+        }
     }
 }

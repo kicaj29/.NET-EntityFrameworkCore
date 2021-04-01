@@ -11,19 +11,10 @@ namespace ConstructorUsageByEFCore
     {
         public virtual DbSet<Person> Persons { get; set; }
 
-        public MyDBContext(DbContextOptions options) : base(options)
-        {
-            
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
-        }
-
-        private static DbContextOptions GetOptions(string connectionString)
-        {
-            
+            optionsBuilder.UseSqlServer(@"Server=(LocalDB)\v11.0;Database=EFCore");
         }
     }
 }
