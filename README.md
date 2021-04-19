@@ -93,3 +93,18 @@ public class Person
     }
 }
 ```    
+
+# InMemoryDB
+
+https://entityframeworkcore.com/providers-inmemory
+
+# UpdateEntityThatHasManyChildren
+
+Make sure to use DB that do not have any EF core migrations becuase if the table with migrations exist then ```Database.EnsureCreated()``` does not work!
+
+[UpdateEntityThatHasManyChildren](./UpdateEntityThatHasManyChildren)
+
+This example shows:
+
+* by default children are not loaded
+* if a children data are not loaded we can updated another children data from the parent and update context - not loaded children data will remain without change in db and it seems that it is expected behavior
